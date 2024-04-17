@@ -1,18 +1,34 @@
-name: Package Chrome Extension
+name: Build and Deploy
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - "v*"
 
 jobs:
-  package:
+  build_and_package:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "14"
+      - name: Install Dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
+
+      - name: Extract Version from Tag
+        id: get_version
+        run: echo "::set-output name=VERSION::${GITHUB_REF#refs/tags/v}"
+
       - name: Zip Extension
-        run: zip -r extension.zip ./src
+        run: |
+          zip -r "bookmark-ai-${{ stteps.get_version.outputs.VERSION }}.zip" ./src
+
       - name: Upload ZIP to Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: extension
-          path: extension.zip
+          name: bookmark-ai-${{ steps.get_version.outputs.VERSION }}
+          path: "bookmark-ai-${{ steps.get_version.outputs.VERSION }}.zip"
