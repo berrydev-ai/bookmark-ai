@@ -1,0 +1,35 @@
+{
+    "manifest_version": 3,
+    "name": "Bookmark AI",
+    "version": "1.0",
+    "description": "Scrapes content from the current webpage and sends it to an API.",
+    "icons": {
+        "16": "icon16.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
+    "permissions": [
+        "activeTab",
+        "storage", // To save API endpoints configuration
+        "http://*/*",
+        "https://*/*"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["contentScript.js"]
+        }
+    ],
+    "action": {
+        "default_icon": {
+            "16": "icon16.png",
+            "48": "icon48.png",
+            "128": "icon128.png"
+        },
+        "default_popup": "popup.html"
+    },
+    "options_page": "options.html"
+}
