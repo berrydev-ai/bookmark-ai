@@ -1,0 +1,18 @@
+name: Package Chrome Extension
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Zip Extension
+        run: zip -r extension.zip ./src
+      - name: Upload ZIP to Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: extension
+          path: extension.zip
